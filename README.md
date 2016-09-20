@@ -8,9 +8,9 @@ Velocity New York Tutorial
 
 Please [sign up for a GitHub account](https://github.com/join) if you don't have one already!
 
-## 2) Dockerhub account
+## 2) Docker Hub account
 
-Please [sign up for a new DockerHub account](https://hub.docker.com/). Since we'll be using shared Jenkins instances, please use a throwaway account for this tutorial.
+Please [sign up for a new Docker Hub account](https://hub.docker.com/). Since we'll be using shared Jenkins instances, please use a throwaway account for this tutorial.
 
 ## 3) DC/OS cluster
 
@@ -121,7 +121,7 @@ docker build -t mesosphere/vny .
 docker run -p 8080:80 mesosphere/vny
 ```
 
-1. Let's add both of these files to the git index and push them up to DockerHub:
+1. Let's add both of these files to the git index and push them up to Docker Hub:
 
 ```
 git add index.html
@@ -132,7 +132,7 @@ git push origin master
 
 ## Exercise 6: Set up new Jenkins pipeline job
 
-Let's set up some continuous integration for this application! What we're going to do is set up a Jenkins build using the new [Pipeline](https://jenkins.io/doc/pipeline/) functionality that's part of Jenkins 2.0. This build will build the container and push it to DockerHub for us.
+Let's set up some continuous integration for this application! What we're going to do is set up a Jenkins build using the new [Pipeline](https://jenkins.io/doc/pipeline/) functionality that's part of Jenkins 2.0. This build will build the container and push it to Docker Hub for us.
 
 1. A core part of Pipeline is allowing you to script your builds and check these in with your code. The very first thing we'll do is create a `Jenkinsfile` in the root of your repository. Paste the following into it. Make sure to replace the `mesosphere/vny` with your Docker Hub repository, and `dockerhub-mesosphere` with the name of your Docker Hub credentials:
 
