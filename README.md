@@ -1,6 +1,8 @@
-# vny
+# QCon 2016
 
-Velocity New York Tutorial
+QCon SF 2016 Workshop:
+
+[Building Your First App with Apache Mesos & DC/OS](https://qconsf.com/sf2016/workshop/building-your-first-app-apache-mesos-dcos)
 
 # Pre-requisites
 
@@ -14,27 +16,22 @@ Please [sign up for a new Docker Hub account](https://hub.docker.com/). Since we
 
 ## 3) DC/OS cluster
 
-You will need a DC/OS cluster! We have provisioned 15 of these for the tutorial, listed below. Access details will be provided in the slides.
+You will need a DC/OS cluster! We have provisioned 10 of these for the tutorial, listed below. Access details will be provided in the slides.
 
 Please use the number that has been assigned to you!
 
 | Cluster | DC/OS Hostname | Public Agent Hostname|
 | --- | --- | --- |
-| 1 | https://dcos01.vny.mesosphere.com | https://public.dcos01.vny.mesosphere.com |
-| 2 | https://dcos02.vny.mesosphere.com | https://public.dcos02.vny.mesosphere.com |
-| 3 | https://dcos03.vny.mesosphere.com | https://public.dcos03.vny.mesosphere.com |
-| 4 | https://dcos04.vny.mesosphere.com | https://public.dcos04.vny.mesosphere.com |
-| 5 | https://dcos05.vny.mesosphere.com | https://public.dcos05.vny.mesosphere.com |
-| 6 | https://dcos06.vny.mesosphere.com | https://public.dcos06.vny.mesosphere.com |
-| 7 | https://dcos07.vny.mesosphere.com | https://public.dcos07.vny.mesosphere.com |
-| 8 | https://dcos08.vny.mesosphere.com | https://public.dcos08.vny.mesosphere.com |
-| 9 | https://dcos09.vny.mesosphere.com | https://public.dcos09.vny.mesosphere.com |
-| 10 | https://dcos10.vny.mesosphere.com | https://public.dcos10.vny.mesosphere.com |
-| 11 | https://dcos11.vny.mesosphere.com | https://public.dcos11.vny.mesosphere.com |
-| 12 | https://dcos12.vny.mesosphere.com | https://public.dcos12.vny.mesosphere.com |
-| 13 | https://dcos13.vny.mesosphere.com | https://public.dcos13.vny.mesosphere.com |
-| 14 | https://dcos14.vny.mesosphere.com | https://public.dcos14.vny.mesosphere.com |
-| 15 | https://dcos15.vny.mesosphere.com | https://public.dcos15.vny.mesosphere.com |
+| 1 | https://dcos01.qcon.mesosphere.com | https://public.dcos01.qcon.mesosphere.com |
+| 2 | https://dcos02.qcon.mesosphere.com | https://public.dcos02.qcon.mesosphere.com |
+| 3 | https://dcos03.qcon.mesosphere.com | https://public.dcos03.qcon.mesosphere.com |
+| 4 | https://dcos04.qcon.mesosphere.com | https://public.dcos04.qcon.mesosphere.com |
+| 5 | https://dcos05.qcon.mesosphere.com | https://public.dcos05.qcon.mesosphere.com |
+| 6 | https://dcos06.qcon.mesosphere.com | https://public.dcos06.qcon.mesosphere.com |
+| 7 | https://dcos07.qcon.mesosphere.com | https://public.dcos07.qcon.mesosphere.com |
+| 8 | https://dcos08.qcon.mesosphere.com | https://public.dcos08.qcon.mesosphere.com |
+| 9 | https://dcos09.qcon.mesosphere.com | https://public.dcos09.qcon.mesosphere.com |
+| 10 | https://dcos10.qcon.mesosphere.com | https://public.dcos10.qcon.mesosphere.com |
 
 ### Ground Rules
 
@@ -50,14 +47,14 @@ Since these clusters are shared resources for the tutorial, please be courteous:
 
 Before we start,  let’s take a quick look at the DC/OS UI by visiting the DC/OS hostname provided to you above.
 
-See the [DC/OS GUI docs](https://docs.mesosphere.com/1.8/usage/webinterface/) for a quick overview of the main components of the UI. We'll be using the UI to observe tasks spinning up on our cluster as our pipeline works.
+See the [DC/OS GUI docs](https://dcos.io/docs/1.8/usage/webinterface/) for a quick overview of the main components of the UI. We'll be using the UI to observe tasks spinning up on our cluster as our pipeline works.
 
 ## Exercise 1: DC/OS CLI
 
 Start by installing the DC/OS CLI. This is an extensible, Python-based command line tool that lets you interact with a DC/OS cluster.
 
 + Follow the instructions here to set it up: https://dcos.io/docs/1.8/usage/cli/install/
-+ Use the same cluster hostname you used to access the UI (e.g. https://dcos01.vny.mesosphere.com)
++ Use the same cluster hostname you used to access the UI (e.g. https://dcos01.qcon.mesosphere.com)
 
 Next, try running some example queries:
 
@@ -65,27 +62,31 @@ Next, try running some example queries:
 + List running tasks with: `dcos task`
 + Show connected nodes with: `dcos node`
 
-## Exercise 2:  Set up a GitHub repository
+## Exercise 2: Install Wordpress
+
+Head over to the [Wordpress example repo](https://github.com/dcos/examples/tree/master/1.8/wordpress) and get MySQL and Wordpress up and running in your cluster.
+
+## Exercise 3:  Set up a GitHub repository
 
 Let's create a GitHub repository to use for the rest of this tutorial. This will be where we store the source for our very simple Nginx website, along with the configuration files necessary to create a pipeline.
 
-1. [Create a new GitHub repository](https://github.com/new). We will use https://github.com/mesosphere/vny for the rest of this tutorial, you should replace this with the URL of the repo you've just created.
+1. [Create a new GitHub repository](https://github.com/new). We will use https://github.com/mesosphere/qcon for the rest of this tutorial, you should replace this with the URL of the repo you've just created.
 
     + For simplicity, set the repository visibility to "Public" and initialise it with a README.
 
 1. Check it out locally, e.g.:
 
-    git clone https://github.com/mesosphere/vny.git && cd vny
+    git clone https://github.com/mesosphere/qcon.git && cd qcon
 
-## Exercise 3: Set up a Docker Hub repository
+## Exercise 4: Set up a Docker Hub repository
 
 Next, let's create a custom Docker Hub repository for your pipeline. This will be where we store built Docker images prior to deploying them.
 
-1. [Create a new repository](https://hub.docker.com/add/repository/). In our examples, we'll be using mesosphere/vny. Make sure to replace this with your own URL (since you won't be able to push to it otherwise :)).
+1. [Create a new repository](https://hub.docker.com/add/repository/). In our examples, we'll be using mesosphere/qcon. Make sure to replace this with your own URL (since you won't be able to push to it otherwise :)).
 
     + Set the repository visibility to "Public". This will let our agent nodes pull from it without needing explicit authorization.
 
-## Exercise 4: Add your Docker Hub credentials to Jenkins
+## Exercise 5: Add your Docker Hub credentials to Jenkins
 
 Next, we'll add these Docker Hub credentials to Jenkins, so that you're able to push to this repository from your Pipeline.
 
@@ -97,7 +98,7 @@ Next, we'll add these Docker Hub credentials to Jenkins, so that you're able to 
 
 1. Click "Add Credentials" and enter your Docker Hub username and password. Give it a meaningful ID. We will use `dockerhub-mesosphere` in the examples below. Be sure to rename it to yours!
 
-## Exercise 5: Create an application and Dockerise it
+## Exercise 6: Create an application and Dockerise it
 
 Now we're going to create a very simple Dockerised Nginx website.
 
@@ -117,8 +118,8 @@ COPY index.html /usr/share/nginx/html/index.html
 1. (Optional) If you like, you can build and run this Docker container locally to check that it works. Run the following commands and then visit http://localhost:8080 in your browser:
 
 ```
-docker build -t mesosphere/vny .
-docker run -p 8080:80 mesosphere/vny
+docker build -t mesosphere/qcon .
+docker run -p 8080:80 mesosphere/qcon
 ```
 
 1. Let's add both of these files to the git index and push them up to Docker Hub:
@@ -130,11 +131,11 @@ git commit -m "Add index.html and Dockerfile"
 git push origin master
 ```
 
-## Exercise 6: Set up new Jenkins pipeline job
+## Exercise 7: Set up new Jenkins pipeline job
 
 Let's set up some continuous integration for this application! What we're going to do is set up a Jenkins build using the new [Pipeline](https://jenkins.io/doc/pipeline/) functionality that's part of Jenkins 2.0. This build will build the container and push it to Docker Hub for us.
 
-1. A core part of Pipeline is allowing you to script your builds and check these in with your code. The very first thing we'll do is create a `Jenkinsfile` in the root of your repository. Paste the following into it. Make sure to replace the `mesosphere/vny` with your Docker Hub repository, and `dockerhub-mesosphere` with the name of your Docker Hub credentials:
+1. A core part of Pipeline is allowing you to script your builds and check these in with your code. The very first thing we'll do is create a `Jenkinsfile` in the root of your repository. Paste the following into it. Make sure to replace the `mesosphere/qcon` with your Docker Hub repository, and `dockerhub-mesosphere` with the name of your Docker Hub credentials:
 
 ```
 def gitCommit() {
@@ -151,7 +152,7 @@ node {
 
     // Build Docker image
     stage 'Build'
-    sh "docker build -t mesosphere/vny:${gitCommit()} ."
+    sh "docker build -t mesosphere/qcon:${gitCommit()} ."
 
     // Log in and push image to GitLab
     stage 'Publish'
@@ -164,7 +165,7 @@ node {
         ]]
     ) {
         sh "docker login -u ${env.DOCKERHUB_USERNAME} -p ${env.DOCKERHUB_PASSWORD} -e demo@mesosphere.com"
-        sh "docker push mesosphere/vny:${gitCommit()}"
+        sh "docker push mesosphere/qcon:${gitCommit()}"
     }
 }
 ```
@@ -184,7 +185,7 @@ git push origin master
 
 ![Poll SCM](/img/poll-scm.png)
 
-1. Next, change the Pipeline definition to use "Pipeline script from SCM" and configure the repository you created earlier (e.g. `https://github.com/mesosphere/vny.git`):
+1. Next, change the Pipeline definition to use "Pipeline script from SCM" and configure the repository you created earlier (e.g. `https://github.com/mesosphere/qcon.git`):
 
 ![Pipeline Configuration](/img/pipeline.png)
 
@@ -192,7 +193,7 @@ git push origin master
 
 1. Once the build has completed successfully, visit Docker Hub to verify that a Docker image has been pushed and tagged with the latest git commit SHA.
 
-## Exercise 7: Add Marathon deploy step
+## Exercise 8: Add Marathon deploy step
 
 Now that we have a working Docker build and push pipeline, let's add a deploy step to it! This will deploy our application to [Marathon](https://docs.mesosphere.com/1.8/usage/service-guides/marathon/) that will be available to our authenticated users.
 
@@ -206,7 +207,7 @@ Now that we have a working Docker build and push pipeline, let's add a deploy st
   "instances": 1,
   "container": {
     "docker": {
-      "image": "mesosphere/vny:latest",
+      "image": "mesosphere/qcon:latest",
       "portMappings": [
         {
           "containerPort": 80,
@@ -237,7 +238,7 @@ Now that we have a working Docker build and push pipeline, let's add a deploy st
 ```
 
 
-1. Next let's add a snippet to the Jenkinsfile that makes use of the [Marathon plugin](https://github.com/jenkinsci/marathon-plugin) to kick off a new deployment as a step in our pipeline. Add this after the last stage in your Jenkinsfile but before the very last closing brace. In this blob, replace `appId` with a unique application ID and `mesosphere/vny` with your own Docker Hub repository name:
+1. Next let's add a snippet to the Jenkinsfile that makes use of the [Marathon plugin](https://github.com/jenkinsci/marathon-plugin) to kick off a new deployment as a step in our pipeline. Add this after the last stage in your Jenkinsfile but before the very last closing brace. In this blob, replace `appId` with a unique application ID and `mesosphere/qcon` with your own Docker Hub repository name:
 
 ```
     // Deploy
@@ -249,7 +250,7 @@ Now that we have a working Docker build and push pipeline, let's add a deploy st
         credentialsId: 'dcos-token',
         filename: 'marathon.json',
         appId: 'nginx-mesosphere',
-        docker: "mesosphere/vny:${gitCommit()}".toString()
+        docker: "mesosphere/qcon:${gitCommit()}".toString()
     )
 ```
 
@@ -264,7 +265,7 @@ git push origin master
 
 1. This will trigger a new Pipeline build. once this completes, head over to the Services UI to see your application deploying and then running.
 
-## Exercise 8: Demo pipeline
+## Exercise 9: Demo pipeline
 
 1. We can observe the pipeline working by committing a small change to the `index.html`. Change the contents of `index.html` to anything you like (e.g. "Hello Pipeline!"), then commit and push the change:
 
@@ -276,7 +277,7 @@ git push origin master
 
 1. This will trigger a new build. If you check out the services UI, you'll see that the application is re-deployed by Marathon automatically and your new index page is now being served!
 
-## Exercise 9: Expose application using Marathon-lb
+## Exercise 10: Expose application using Marathon-lb
 
 Often you'll want to expose your application to the public. We make use of Marathon-lb, a wrapper around HAProxy, an HTTP load balancer for this. This is already pre-installed for us and serving requests at the "Publice Agent Hostname" for your cluster up above. In this exercise, we'll add labels to our Marathon application that tells Marathon-lb to expose it to the internet.
 
@@ -309,9 +310,9 @@ git push origin master
 
 1. Marathon should re-deploy your application. Go find it in the Services UI and check out the "Configuration" tab for your application to see the `servicePort` that it has been assigned.
 
-1. Now visit the public agent appended by the `servicePort` (e.g. http://public.dcos01.vny.mesosphere.com:10000/) to view your application available on the internet! 
+1. Now visit the public agent appended by the `servicePort` (e.g. http://public.dcos01.qcon.mesosphere.com:10000/) to view your application available on the internet! 
 
-## Exercise 10: Scaling & Deploys
+## Exercise 11: Scaling & Deploys
 
 Now that we've got our application running, let's scale it up and observe how we can do rolling deploys using Marathon without downtime.
 
