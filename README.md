@@ -63,13 +63,13 @@ Next, try running some example queries:
 
 Let's create a GitHub repository to use for the rest of this tutorial. This will be where we store the source for our very simple Nginx website, along with the configuration files necessary to create a pipeline.
 
-1. [Create a new GitHub repository](https://github.com/new). We will use https://github.com/mesosphere/software-architecture for the rest of this tutorial, you should replace this with the URL of the repo you've just created.
+1. [Create a new GitHub repository](https://github.com/new). We will use https://github.com/mesosphere/software-architecture for the rest of this tutorial, *you should replace this with the URL of the repo you've just created*.
 
     + For simplicity, set the repository visibility to "Public" and initialise it with a README.
 
 1. Check it out locally, e.g.:
 
-    git clone https://github.com/mesosphere/qcon.git && cd qcon
+    git clone https://github.com/mesosphere/software-architecture.git && cd software-architecture
 
 ## Exercise 3: Create an application and Dockerise it
 
@@ -108,9 +108,11 @@ git push origin master
 
 Let's set up some continuous integration for this application! What we're going to do is set up a Jenkins build using the new [Pipeline](https://jenkins.io/doc/pipeline/) functionality that's part of Jenkins 2.0. This build will build the container and push it to Docker Hub for us.
 
-1. A core part of Pipeline is allowing you to script your builds and check these in with your code. The very first thing we'll do is create a `Jenkinsfile` in the root of your repository. Paste the following into it. Make sure to replace the `mesosphere/software-architecture` with your Docker Hub repository, and `dockerhub-mesosphere` with the name of your Docker Hub credentials:
+1. A core part of Pipeline is allowing you to script your builds and check these in with your code. The very first thing we'll do is create a `Jenkinsfile` in the root of your repository. Paste the following into it. Replace the userName at the top with your GitHub username
 
 ```
+def userName = "ssk2"
+
 def gitCommit() {
     sh "git rev-parse HEAD > GIT_COMMIT"
     def gitCommit = readFile('GIT_COMMIT').trim()
@@ -125,20 +127,20 @@ node {
 
     // Build Docker image
     stage 'Build'
-    sh "docker build -t mesosphere/software-architecture:${gitCommit()} ."
+    sh "docker build -t mesosphere/software-architecture:${userName}-${gitCommit()} ."
 
     // Log in and push image to GitLab
     stage 'Publish'
     withCredentials(
         [[
             $class: 'UsernamePasswordMultiBinding',
-            credentialsId: 'dockerhub-mesosphere',
+            credentialsId: 'docker-hub-credentials',
             passwordVariable: 'DOCKERHUB_PASSWORD',
             usernameVariable: 'DOCKERHUB_USERNAME'
         ]]
     ) {
         sh "docker login -u '${env.DOCKERHUB_USERNAME}' -p '${env.DOCKERHUB_PASSWORD}' -e demo@mesosphere.com"
-        sh "docker push mesosphere/software-architecture:${gitCommit()}"
+        sh "docker push mesosphere/software-architecture:${userName}-${gitCommit()}"
     }
 }
 ```
@@ -158,7 +160,7 @@ git push origin master
 
 ![Poll SCM](/img/poll-scm.png)
 
-1. Next, change the Pipeline definition to use "Pipeline script from SCM" and configure the repository you created earlier (e.g. `https://github.com/mesosphere/software-architecture.git`):
+1. Next, change the Pipeline definition to use "Pipeline script from SCM" and configure the GitHub repository you created earlier (e.g. `https://github.com/ssk2/software-architecture.git`):
 
 ![Pipeline Configuration](/img/pipeline.png)
 
@@ -170,7 +172,7 @@ git push origin master
 
 Now that we have a working Docker build and push pipeline, let's add a deploy step to it! This will deploy our application to [Marathon](https://docs.mesosphere.com/1.8/usage/service-guides/marathon/) that will be available to our authenticated users.
 
-1. First, let's create a new `marathon.json` file. This tells Marathon how to run our application. The following JSON blob specifies some basic properties of the application (such as how many resources to give it), what Docker image to use, as well as some other metadata. Again, replace the Docker image with your own, and change the `id `, as well as the `DCOS_SERVICE_NAME` to something unique for your application:
+1. First, let's create a new `marathon.json` file. This tells Marathon how to run our application. The following JSON blob specifies some basic properties of the application (such as how many resources to give it), what Docker image to use, as well as some other metadata. **Make sure to replace the `DCOS_SERVICE_NAME` to something unique for your application**:
 
 ```json
 {
@@ -222,8 +224,8 @@ Now that we have a working Docker build and push pipeline, let's add a deploy st
         forceUpdate: false,
         credentialsId: 'dcos-token',
         filename: 'marathon.json',
-        appId: 'nginx-mesosphere',
-        docker: "mesosphere/software-architecture:${gitCommit()}".toString()
+        appId: 'nginx-ssk2',
+        docker: "mesosphere/software-architecture:${userName}-${gitCommit()}".toString()
     )
 ```
 
