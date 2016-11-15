@@ -166,7 +166,7 @@ git push origin master
 
 1. Hit save. You should see the Pipeline trigger within a minute. After it triggers, a build agent will be spun up dynamically on the DC/OS cluster and the build will run there.
 
-1. Once the build has completed successfully, visit Docker Hub to verify that a Docker image has been pushed and tagged with the latest git commit SHA.
+1. Once the build has completed successfully, [visit Docker Hub](https://hub.docker.com/r/mesosphere/software-architecture/tags/) to verify that a Docker image has been pushed and tagged with the latest git commit SHA.
 
 ## Exercise 5: Add Marathon deploy step
 
