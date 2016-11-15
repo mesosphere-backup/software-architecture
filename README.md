@@ -224,7 +224,7 @@ Now that we have a working Docker build and push pipeline, let's add a deploy st
         forceUpdate: false,
         credentialsId: 'dcos-token',
         filename: 'marathon.json',
-        appId: 'nginx-${userName}',
+        appid: 'nginx-${userName}',
         docker: "mesosphere/software-architecture:${userName}-${gitCommit()}".toString()
     )
 ```
