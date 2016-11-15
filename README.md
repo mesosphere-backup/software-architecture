@@ -63,13 +63,13 @@ Next, try running some example queries:
 
 Let's create a GitHub repository to use for the rest of this tutorial. This will be where we store the source for our very simple Nginx website, along with the configuration files necessary to create a pipeline.
 
-1. [Create a new GitHub repository](https://github.com/new). We will use https://github.com/mesosphere/software-architecture for the rest of this tutorial, *you should replace this with the URL of the repo you've just created*.
+1. [Create a new GitHub repository](https://github.com/new). We will use https://github.com/ssk2/software-architecture for the rest of this tutorial, *you should replace this with the URL of the repo you've just created*.
 
     + For simplicity, set the repository visibility to "Public" and initialise it with a README.
 
 1. Check it out locally, e.g.:
 
-    git clone https://github.com/mesosphere/software-architecture.git && cd software-architecture
+    git clone https://github.com/ssk2/software-architecture.git && cd software-architecture
 
 ## Exercise 3: Create an application and Dockerise it
 
