@@ -1,6 +1,7 @@
 # Software Architecture 2016
 
 Software Architecture 2016 Workshop:
+
 [Highly efficient container orchestration and continuous delivery with DC/OS and Jenkins](http://conferences.oreilly.com/software-architecture/engineering-business-ca/public/schedule/detail/53334)
 
 # Pre-requisites
@@ -136,7 +137,7 @@ node {
             usernameVariable: 'DOCKERHUB_USERNAME'
         ]]
     ) {
-        sh "docker login -u ${env.DOCKERHUB_USERNAME} -p ${env.DOCKERHUB_PASSWORD} -e demo@mesosphere.com"
+        sh "docker login -u '${env.DOCKERHUB_USERNAME}' -p '${env.DOCKERHUB_PASSWORD}' -e demo@mesosphere.com"
         sh "docker push mesosphere/software-architecture:${gitCommit()}"
     }
 }
