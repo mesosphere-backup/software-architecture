@@ -95,7 +95,7 @@ docker build -t mesosphere/software-architecture .
 docker run -p 8080:80 mesosphere/software-architecture
 ```
 
-1. Let's add both of these files to the git index and push them up to Docker Hub:
+1. Let's add both of these files to the git index and push them up to GitHub:
 
 ```
 git add index.html
