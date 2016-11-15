@@ -213,7 +213,7 @@ Now that we have a working Docker build and push pipeline, let's add a deploy st
 ```
 
 
-1. Next let's add a snippet to the Jenkinsfile that makes use of the [Marathon plugin](https://github.com/jenkinsci/marathon-plugin) to kick off a new deployment as a step in our pipeline. Add this after the last stage in your Jenkinsfile but before the very last closing brace. In this blob, replace `appId` with a unique application ID and `mesosphere/architecture` with your own Docker Hub repository name:
+1. Next let's add a snippet to the Jenkinsfile that makes use of the [Marathon plugin](https://github.com/jenkinsci/marathon-plugin) to kick off a new deployment as a step in our pipeline. Add this after the last stage in your Jenkinsfile but before the very last closing brace. In this blob, replace `appid` with a unique application ID and `mesosphere/architecture` with your own Docker Hub repository name:
 
 ```
     // Deploy
