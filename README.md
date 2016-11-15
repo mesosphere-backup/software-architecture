@@ -108,7 +108,7 @@ git push origin master
 
 Let's set up some continuous integration for this application! What we're going to do is set up a Jenkins build using the new [Pipeline](https://jenkins.io/doc/pipeline/) functionality that's part of Jenkins 2.0. This build will build the container and push it to Docker Hub for us.
 
-1. A core part of Pipeline is allowing you to script your builds and check these in with your code. The very first thing we'll do is create a `Jenkinsfile` in the root of your repository. Paste the following into it. Replace the userName at the top with your GitHub username
+1. A core part of Pipeline is allowing you to script your builds and check these in with your code. The very first thing we'll do is create a `Jenkinsfile` in the root of your repository. Paste the following into it. **Replace the userName at the top with your GitHub username**:
 
 ```
 def userName = "ssk2"
@@ -152,7 +152,7 @@ git commit -m "Add Jenkinsfile"
 git push origin master
 ```
 
-1. Next, we'll create the pipeline job in Jenkins itself. Navigate to the Jenkins UI and click on New Item. We'll create a new "Pipeline" job. Be sure to pick a more descriptive name, e.g. `nginx-mesosphere`:
+1. Next, we'll create the pipeline job in Jenkins itself. Navigate to the Jenkins UI and click on New Item. We'll create a new "Pipeline" job. Be sure to pick a more descriptive name, e.g. `nginx-ssk2`:
 
 ![Create New Item](/img/new-item.png)
 
@@ -172,11 +172,11 @@ git push origin master
 
 Now that we have a working Docker build and push pipeline, let's add a deploy step to it! This will deploy our application to [Marathon](https://docs.mesosphere.com/1.8/usage/service-guides/marathon/) that will be available to our authenticated users.
 
-1. First, let's create a new `marathon.json` file. This tells Marathon how to run our application. The following JSON blob specifies some basic properties of the application (such as how many resources to give it), what Docker image to use, as well as some other metadata. **Make sure to replace the `DCOS_SERVICE_NAME` to something unique for your application**:
+1. First, let's create a new `marathon.json` file. This tells Marathon how to run our application. The following JSON blob specifies some basic properties of the application (such as how many resources to give it), what Docker image to use, as well as some other metadata. **Make sure to replace the `DCOS_SERVICE_NAME` to include your GitHub username**:
 
 ```json
 {
-  "id": "/nginx-mesosphere",
+  "id": "/nginx-ssk2",
   "cpus": 1,
   "mem": 128,
   "instances": 1,
@@ -207,7 +207,7 @@ Now that we have a working Docker build and push pipeline, let's add a deploy st
   "labels": {
     "DCOS_SERVICE_PORT_INDEX": "0",
     "DCOS_SERVICE_SCHEME": "http",
-    "DCOS_SERVICE_NAME": "nginx-mesosphere"
+    "DCOS_SERVICE_NAME": "nginx-ssk2"
   }
 }
 ```
@@ -224,7 +224,7 @@ Now that we have a working Docker build and push pipeline, let's add a deploy st
         forceUpdate: false,
         credentialsId: 'dcos-token',
         filename: 'marathon.json',
-        appId: 'nginx-ssk2',
+        appId: 'nginx-${userName}',
         docker: "mesosphere/software-architecture:${userName}-${gitCommit()}".toString()
     )
 ```
